@@ -45,7 +45,7 @@ app.post("/create", async (req, res) => {
       return res.status(400).json({ message: 'Title and author are required' });
     }
 
-    // Checks if the book already exists
+    // checks if the book already exists
     const existingBook = await pool.query(
       "SELECT * FROM books WHERE title ILIKE $1",
       [title]
@@ -56,13 +56,13 @@ app.post("/create", async (req, res) => {
       return res.status(400).json({ message: 'Book already exists' });
     }
 
-    // Inserts the new book into the database
+    // inserts the new book into the database
     await pool.query(
       "INSERT INTO books (title, author) VALUES ($1, $2) RETURNING *",
       [title, author]
     );
 
-    // Respond 200 status
+    // respond 200 status
     res.status(200).json({ message: 'Book created successfully' });
 
   } catch (error) {
@@ -73,9 +73,28 @@ app.post("/create", async (req, res) => {
 
 // delete endpoint to delete a book from the database
 app.delete("/delete", async (req, res) => {
-    
-    try {
+  const { title, author } = req.body;
 
+  // check if title and author are provided
+  if (!title || !author) {
+    return res.status(400).json({ message: 'Title and author are required' });
+  }
+
+  try {
+    
+    // delete the book from the database
+    const result = await pool.query(
+      "DELETE FROM books WHERE title ILIKE $1 AND author ILIKE $2 RETURNING *",
+      [title, author]
+    );
+
+    // check if any rows were affected
+    if (result.rowCount === 0) {
+      return res.status(404).json({ message: 'Book not found' });
+    }
+
+    // respond 200 status
+    res.status(200).json({ message: 'Book deleted successfully' });
   } catch (error) {
     console.error(error.message);
     res.status(500).json({ message: 'Internal Server Error' });
