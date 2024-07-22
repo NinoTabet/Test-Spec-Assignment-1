@@ -1,8 +1,10 @@
 require('dotenv').config();
 const express = require("express");
+const cors = require('cors');
 const app = express();
 const pool = require("./db");
 
+app.use(cors());
 app.use(express.json());
 
 // search endpoint to query database for requested book title
@@ -21,7 +23,7 @@ app.get("/search", async (req, res) => {
     
     // if the book isn't found, this returns 404
     if (searchResults.rows.length === 0) {
-        res.status(404).json({message: 'Book not found'});
+      return res.status(404).json({message: 'Book not found'});
     }
 
     // return json of search results
