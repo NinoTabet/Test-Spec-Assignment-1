@@ -8,13 +8,14 @@ app.use(express.json());
 // search endpoint to query database for requested book title
 app.get("/search", async (req, res) => {
   try {
+
   } catch (error) {
     res.status(500).json({ message: 'Internal Server Error' });
   }
 });
 
 // create endpoint to create a new book in the database
-app.get("/create", async (req, res) => {
+app.post("/create", async (req, res) => {
     try {
     } catch (error) {
       res.status(500).json({ message: 'Internal Server Error' });
@@ -22,9 +23,14 @@ app.get("/create", async (req, res) => {
 });
 
 // delete endpoint to delete a book from the database
-app.get("/create", async (req, res) => {
+app.delete("/delete", async (req, res) => {
     try {
     } catch (error) {
       res.status(500).json({ message: 'Internal Server Error' });
     }
+});
+
+const PORT = process.env.PORT || 3000;
+app.listen(PORT, () => {
+  console.log(`Server is running on port ${PORT}`);
 });
