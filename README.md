@@ -13,7 +13,7 @@ To get started with this project, follow the instructions below:
 
 This project requires a .env file that contains the database URL. Make sure to add this file to ensure the code can read from and write to the database.
 
-3. **Set Up the Database**
+3. **Set Up the Postgres Database**
 
 Run the following SQL queries to create and populate your database:
 
