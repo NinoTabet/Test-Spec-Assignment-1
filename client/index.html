@@ -133,8 +133,9 @@
                         // creates and appends a card for each book in the result
                         result.forEach(book => {
                             const card = document.createElement('div');
-                            card.className = 'card mb-3'; // Bootstrap card class
-                            card.style.width = '18rem'; // Sets card width
+                            card.className = 'card mb-3'; // bootstrap card class
+                            card.style.width = '18rem'; // sets card width
+                            card.style.height = '5rem';
                             card.innerHTML = `
                                 <div class="card-body">
                                     <h5 class="card-title">${book.title}</h5>
