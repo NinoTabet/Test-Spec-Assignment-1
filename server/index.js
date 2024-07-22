@@ -1,33 +1,58 @@
+require('dotenv').config();
 const express = require("express");
 const app = express();
 const pool = require("./db");
 
-app.use(cors());
 app.use(express.json());
 
 // search endpoint to query database for requested book title
 app.get("/search", async (req, res) => {
+
+  // pulls book title from request
+  const bookTitle = req.query.title;
+
   try {
 
+    // searches databse for all books with a similar title to the request
+    const searchResults = await pool.query(
+        "SELECT * FROM books WHERE title ILIKE ($1)",
+        [`%${bookTitle}%`]
+    );
+    
+    // if the book isn't found, this returns 404
+    if (searchResults.rows.length === 0) {
+        res.status(404).json({message: 'Book not found'});
+    }
+
+    // return json of search results
+    res.json(searchResults.rows);
+
   } catch (error) {
-    res.status(500).json({ message: 'Internal Server Error' });
+      console.error(error.message);
+      res.status(500).json({ message: 'Internal Server Error' });
   }
 });
 
 // create endpoint to create a new book in the database
 app.post("/create", async (req, res) => {
-    try {
-    } catch (error) {
-      res.status(500).json({ message: 'Internal Server Error' });
-    }
+
+  try {
+
+  } catch (error) {
+    console.error(error.message);
+    res.status(500).json({ message: 'Internal Server Error' });
+  }
 });
 
 // delete endpoint to delete a book from the database
 app.delete("/delete", async (req, res) => {
+    
     try {
-    } catch (error) {
-      res.status(500).json({ message: 'Internal Server Error' });
-    }
+
+  } catch (error) {
+    console.error(error.message);
+    res.status(500).json({ message: 'Internal Server Error' });
+  }
 });
 
 const PORT = process.env.PORT || 3000;
