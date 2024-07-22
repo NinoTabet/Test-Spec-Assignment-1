@@ -35,8 +35,35 @@ app.get("/search", async (req, res) => {
 
 // create endpoint to create a new book in the database
 app.post("/create", async (req, res) => {
+  
+  const { title, author } = req.body;
 
   try {
+
+    // returns 400 response if the title or author is missing from request body
+    if (!title || !author) {
+      return res.status(400).json({ message: 'Title and author are required' });
+    }
+
+    // Checks if the book already exists
+    const existingBook = await pool.query(
+      "SELECT * FROM books WHERE title ILIKE $1",
+      [title]
+    );
+
+    // if book exists, responds with 404 status
+    if (existingBook.rows.length > 0) {
+      return res.status(400).json({ message: 'Book already exists' });
+    }
+
+    // Inserts the new book into the database
+    const result = await pool.query(
+      "INSERT INTO books (title, author) VALUES ($1, $2) RETURNING *",
+      [title, author]
+    );
+
+    // Respond 200 status
+    res.status(200).json({ message: 'Book created successfully' });
 
   } catch (error) {
     console.error(error.message);
