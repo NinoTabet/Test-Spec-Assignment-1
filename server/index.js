@@ -81,14 +81,14 @@ app.delete("/delete", async (req, res) => {
   }
 
   try {
-    
-    // delete the book from the database
+
+    // deletes the book from the database
     const result = await pool.query(
       "DELETE FROM books WHERE title ILIKE $1 AND author ILIKE $2 RETURNING *",
       [title, author]
     );
 
-    // check if any rows were affected
+    // checks if any rows were affected
     if (result.rowCount === 0) {
       return res.status(404).json({ message: 'Book not found' });
     }
