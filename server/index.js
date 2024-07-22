@@ -47,10 +47,10 @@ app.post("/create", async (req, res) => {
       return res.status(400).json({ message: 'Title and author are required' });
     }
 
-    // checks if the book already exists
+    // checks if book with specified title and author already exists
     const existingBook = await pool.query(
-      "SELECT * FROM books WHERE title ILIKE $1",
-      [title]
+      "SELECT * FROM books WHERE title ILIKE $1 AND author ILIKE $2",
+      [title, author]
     );
 
     // if book exists, responds with 404 status
