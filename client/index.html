@@ -54,7 +54,7 @@
                     </div>
                 </form>
             </div>
-            <div class="col-12 col-md-8   overflow-auto d-flex justify-content-center align-items-center" style="max-height: 100%;">
+            <div class="col-12 col-md-8 overflow-auto d-flex justify-content-center align-items-center" style="max-height: 100%;">
                 <div id="card-container" class="d-flex flex-wrap justify-content-around   overflow-auto h-100">
                     <!-- Cards will be dynamically inserted here -->
                 </div>
@@ -143,7 +143,10 @@
                             `;
                             cardContainer.appendChild(card);
                         });
-                    } else {
+                    } else if(result){
+                        alert(result.message);
+                    }
+                    else{
                         alert('No books found'); // alerts if no books are found
                     }
                 } else {
