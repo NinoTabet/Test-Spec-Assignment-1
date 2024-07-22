@@ -57,7 +57,7 @@ app.post("/create", async (req, res) => {
     }
 
     // Inserts the new book into the database
-    const result = await pool.query(
+    await pool.query(
       "INSERT INTO books (title, author) VALUES ($1, $2) RETURNING *",
       [title, author]
     );
